@@ -369,7 +369,7 @@ if __name__ == "__main__":
     PTG(win)
     win.mainloop()
 
-# print(datetime.today())
+
 #
 #
 # def get_contrib():
