@@ -371,9 +371,7 @@ if __name__ == "__main__":
 
 
 
-#
-#
-# fetch = str(get_contrib())[2:]
+
 #
 # for f in fetch.split("|"):
 #     print(f.split("->"))
