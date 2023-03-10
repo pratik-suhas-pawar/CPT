@@ -372,6 +372,5 @@ if __name__ == "__main__":
 
 
 
-#
-# for f in fetch.split("|"):
+
 #     print(f.split("->"))
