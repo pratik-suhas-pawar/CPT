@@ -370,10 +370,7 @@ if __name__ == "__main__":
     win.mainloop()
 
 
-#
-#
-# def get_contrib():
-#     return requests.get("http://anodicpassion.pythonanywhere.com/").content
+
 #
 #
 # fetch = str(get_contrib())[2:]
