@@ -35,6 +35,22 @@ class PTG:
         self.notification.place(x=width - 100, y=height - 20, width=100, height=20)
         self.sync()
         self.main.protocol('WM_DELETE_WINDOW', self.exit)
+        
+    def sync(self):
+        if f"{month_year[0] + ' ' + date + ', ' + month_year[1]}.xml" in os.listdir("essential/"):
+            print("Syncing from database")
+            self.notification.config(text="Local")
+            with open(f"essential/{month_year[0] + ' ' + date + ', ' + month_year[1]}.xml", "r") as file:
+                data = file.read()
+
+            for name_comit in data.split(",")[:-1]:
+                name, comit = name_comit.split(':')[0], int(name_comit.split(':')[-1])
+                self.data[name] = comit
+                self.data_name.append(name)
+
+        else:
+            t1 = threading.Thread(target=self.fetch_data)
+            t1.start()
 
     def fetch_data(self):
         self.data = str(requests.get("http://anodicpassion.pythonanywhere.com/").content)[2:].split("|")
