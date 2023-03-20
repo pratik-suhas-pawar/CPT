@@ -1,11 +1,13 @@
-import random
 import threading
-
-import requests
+import multiprocessing
+import time
 from datetime import datetime
-from tkinter import Tk, Frame, LabelFrame, Label, Button, Y
-from tkinter.ttk import Progressbar, Scrollbar, Style
+import os
+from git_data import GitData
+from tkinter import Tk, LabelFrame, Label, Button, Entry, filedialog, StringVar
+from tkinter.ttk import Progressbar, Style
 from PIL import Image, ImageTk
+import openpyxl
 
 width, height = 1366, 768
 
