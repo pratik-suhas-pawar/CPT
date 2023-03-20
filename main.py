@@ -21,16 +21,20 @@ date, month_year = str(int(datetime.now().strftime("%d"))), datetime.now().strft
 class PTG:
     def __init__(self, window):
 
-        self.data = []
+        self.data = {}
+        self.data_name = []
         self.main = window
         self.frame_1 = LabelFrame(self.main, bg="white", fg="black", bd=0)
         self.main.geometry(newGeometry=f"{width}x{height}+{int((self.main.winfo_screenwidth() - width) / 2)}+"
-                                       f"{int((self.main.winfo_screenheight() - height) / 2)}")
+                                       f"{int((self.main.winfo_screenheight() - height) / 2) - 20}")
         self.main.title("C P T")
 
         self.main.bind('<Button-1>', self.click)
-        t1 = threading.Thread(target=self.fetch_data)
-        t1.start()
+        self.notification = Label(self.main, fg="black", bg="white", font=("Segoe UI", 12), relief="solid",
+                                  bd=0, anchor="s")
+        self.notification.place(x=width - 100, y=height - 20, width=100, height=20)
+        self.sync()
+        self.main.protocol('WM_DELETE_WINDOW', self.exit)
 
     def fetch_data(self):
         self.data = str(requests.get("http://anodicpassion.pythonanywhere.com/").content)[2:].split("|")
