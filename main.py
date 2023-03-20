@@ -53,8 +53,21 @@ class PTG:
             t1.start()
 
     def fetch_data(self):
-        self.data = str(requests.get("http://anodicpassion.pythonanywhere.com/").content)[2:].split("|")
+        self.notification.config(text="Syncing...")
+        dataframe = openpyxl.load_workbook(raw[0])
+        dataframe1 = dataframe.active
 
+        data_base = open(f"essential/{month_year[0] + ' ' + date + ', ' + month_year[1]}.xml", "a")
+        for i in dataframe1.iter_rows(2, dataframe1.max_row):
+            name, usr_id = i[0].value, i[1].value
+            comit = g_data.get_today(usr_id)
+            self.data[name] = comit
+            self.data_name.append(name)
+            data_base.write(f"{name}:{comit},")
+        print(self.data)
+        data_base.close()
+        self.notification.config(text="Updated")
+        self.notification.update()
     def progress(self):
         self.frame_1 = LabelFrame(self.main, bg="white", fg="black", bd=0)
         self.cnt = 1
