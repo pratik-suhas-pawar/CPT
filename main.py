@@ -281,7 +281,7 @@ class PTG:
         lbr_13 = Label(self.frame_1, bg="white", fg="black", font=("Segoe UI", 20))
         lbr_13.place(x=624, y=650, width=300, height=30)
         lbr_14 = Label(self.frame_1, bg="white", fg="black", font=("Segoe UI", 20))
-        lbr_14.place(x=624, y=700, width=300, height=30)
+        lbr_14.place(x=624, y=700, width=300, height=30) 
 
         def show_data(val: int = 0, std_name=""):
 
