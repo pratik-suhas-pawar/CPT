@@ -17,7 +17,6 @@ g_data = GitData()
 date, month_year = str(int(datetime.now().strftime("%d"))), datetime.now().strftime("%B %Y").split(" ")
 
 
-
 class PTG:
     def __init__(self, window):
 
@@ -35,7 +34,7 @@ class PTG:
         self.notification.place(x=width - 100, y=height - 20, width=100, height=20)
         self.sync()
         self.main.protocol('WM_DELETE_WINDOW', self.exit)
-        
+
     def sync(self):
         if f"{month_year[0] + ' ' + date + ', ' + month_year[1]}.xml" in os.listdir("essential/"):
             print("Syncing from database")
@@ -68,7 +67,8 @@ class PTG:
         data_base.close()
         self.notification.config(text="Updated")
         self.notification.update()
-        def progress(self):
+
+    def progress(self):
         self.frame_1 = LabelFrame(self.main, bg="white", fg="black", bd=0)
         # self.cnt = 1
         self.page = 0
@@ -281,10 +281,10 @@ class PTG:
         lbr_13 = Label(self.frame_1, bg="white", fg="black", font=("Segoe UI", 20))
         lbr_13.place(x=624, y=650, width=300, height=30)
         lbr_14 = Label(self.frame_1, bg="white", fg="black", font=("Segoe UI", 20))
-        lbr_14.place(x=624, y=700, width=300, height=30) 
+        lbr_14.place(x=624, y=700, width=300, height=30)
 
         def show_data(val: int = 0, std_name=""):
-
+            # std_name = std_name + " (" + str(val) + ") "
             if 0 < val <= 4:
                 color = "#02231c"
             elif 4 < val <= 8:
@@ -298,9 +298,9 @@ class PTG:
             if 0 <= self.cnt <= 14:
                 pg_name = "pg_" + str(self.cnt)
             else:
-                pg_name = "pgr_" + str(self.cnt)
+                pg_name = "pgr_" + str(self.cnt - 14)
             style.configure(f"{pg_name}.Horizontal.TProgressbar", background=color)
-            # print("pgname: ", pg_name)
+
             if pg_name == "pg_1":
                 pg_1['value'] = val
                 lbl_1.config(text=std_name)
@@ -345,51 +345,152 @@ class PTG:
                 lbl_14.config(text=std_name)
             elif pg_name == "pgr_1":
                 pgr_1["value"] = val
+                lbr_1.config(text=std_name)
             elif pg_name == "pgr_2":
                 pgr_2["value"] = val
+                lbr_2.config(text=std_name)
             elif pg_name == "pgr_3":
                 pgr_3["value"] = val
+                lbr_3.config(text=std_name)
             elif pg_name == "pgr_4":
                 pgr_4["value"] = val
+                lbr_4.config(text=std_name)
             elif pg_name == "pgr_5":
                 pgr_5["value"] = val
+                lbr_5.config(text=std_name)
             elif pg_name == "pgr_6":
                 pgr_6["value"] = val
+                lbr_6.config(text=std_name)
             elif pg_name == "pgr_7":
                 pgr_7["value"] = val
+                lbr_7.config(text=std_name)
             elif pg_name == "pgr_8":
                 pgr_8["value"] = val
+                lbr_8.config(text=std_name)
             elif pg_name == "pgr_9":
                 pgr_9["value"] = val
+                lbr_9.config(text=std_name)
             elif pg_name == "pgr_10":
                 pgr_10["value"] = val
+                lbr_10.config(text=std_name)
             elif pg_name == "pgr_11":
                 pgr_11["value"] = val
+                lbr_11.config(text=std_name)
             elif pg_name == "pgr_12":
                 pgr_12["value"] = val
+                lbr_12.config(text=std_name)
             elif pg_name == "pgr_13":
                 pgr_13["value"] = val
+                lbr_13.config(text=std_name)
             elif pg_name == "pgr_14":
                 pgr_14["value"] = val
+                lbr_14.config(text=std_name)
 
             self.cnt = self.cnt + 1
 
-        for inte, i in enumerate(self.data):
-            s_name, contrib = i.split("->")
-            if "No" in contrib:
-                val = 0
-            else:
-                val = int(contrib.split(">")[-1].split(" ")[0])
-            print(val, s_name)
-            show_data(val, s_name)
-            if len(self.data)-2 == inte:
-                break
+        def show():
+            self.cnt = 1
+            for name in self.data_name[0 + (28 * self.page): 28 + (28 * self.page)]:
+                contrib = self.data[name]
+                show_data(contrib, name)
+
+            for _ in range(28 - len(self.data_name[0 + (28 * self.page): 28 + (28 * self.page)])):
+                show_data(0, "")
+
+        show()
+
+        def page_back():
+            if self.page > 0:
+                self.page = self.page - 1
+            self.pg_num_lbl.config(text=self.page)
+            show()
+
+        def page_front():
+            if self.page < int(len(self.data_name) / 28):
+                self.page = self.page + 1
+            self.pg_num_lbl.config(text=self.page)
+
+            show()
+
+        Button(self.frame_1, text=" < ", font=("courier new", 15), fg="black", bg="white", relief="solid", bd=0,
+               command=page_back).place(x=int((width / 2) - 50), width=20, y=height - 30)
+
+        self.pg_num_lbl = Label(self.frame_1, font=("Segoe UI", 15), fg="black", bg="white", text=self.page,
+                                relief="solid", bd=1)
+        self.pg_num_lbl.place(x=int((width / 2) - 20), width=40, y=height - 30)
+
+        Button(self.frame_1, text=" > ", font=("courier new", 15), fg="black", bg="white", relief="solid", bd=0,
+               command=page_front).place(x=int((width / 2) + 30), width=20, y=height - 30)
+
+    def settings(self):
+        se_file, te_file, be_file = StringVar(), StringVar(), StringVar()
+        se_file.set(raw[0])
+        te_file.set(raw[1])
+        be_file.set(raw[2])
+
+        self.frame_2 = LabelFrame(self.main, bg="white", fg="black", bd=0)
+
+        def close_settings(a=None):
+            self.frame_2.destroy()
+
+        self.frame_2.place(x=0, y=0, width=width, height=height)
+        Button(self.frame_2, text="↼", fg="black", bg="white", font=("calibre", 25), foreground="black",
+               background="white", relief="solid", bd=0, command=close_settings).place(x=0, y=0, width=50, height=50)
+
+        box = LabelFrame(self.frame_2, text=" Settings ", foreground="black", background="white", font=("Segoe UI", 20),
+                         relief="ridge", bd=2)
+        box.place(x=300, y=50, width=width - 600, height=height - 100)
+
+        Label(box, text="SE Git ID: ", font=("Segoe UI", 20), relief="solid", bd=0, fg="black",
+              bg="white").place(x=100, y=30, )
+        Label(box, text="TE Git ID: ", font=("Segoe UI", 20), relief="solid", bd=0, fg="black",
+              bg="white").place(x=100, y=80, )
+        Label(box, text="BE Git ID: ", font=("Segoe UI", 20), relief="solid", bd=0, fg="black",
+              bg="white").place(x=100, y=130, )
+
+        Label(box, text="Last Sync: " + month_year[0] + ' ' + date + ', ' + month_year[1], font=("Segoe UI", 20), relief="solid", bd=0, fg="black",
+              bg="white").place(x=100, y=height - 100 - 70, )
+
+        Entry(box, textvariable=se_file, relief="solid", bd=1, fg="black", bg="white", font=("Segoe UI", 15),
+              state="normal").place(x=200, y=30, width=400)
+        Entry(box, textvariable=te_file, relief="solid", bd=1, fg="black", bg="white", font=("Segoe UI", 15),
+              state="normal").place(x=200, y=80, width=400)
+        Entry(box, textvariable=be_file, relief="solid", bd=1, fg="black", bg="white", font=("Segoe UI", 15),
+              state="normal").place(x=200, y=130, width=400)
+
+        def get_sec():
+            file = filedialog.askopenfilename(filetypes=[('Excel', '*.xlsx')], defaultextension=".xlsx",
+                                              title="SE Git Excel", )
+            if file is not None:
+                se_file.set(file)
+                raw[0] = file
+
+        def get_tec():
+            file = filedialog.askopenfilename(filetypes=[('Excel', '*.xlsx')], defaultextension=".xlsx",
+                                              title="TE Git Excel", )
+            if file is not None:
+                te_file.set(file)
+                raw[1] = file
+
+        def get_bec():
+            file = filedialog.askopenfilename(filetypes=[('Excel', '*.xlsx')], defaultextension=".xlsx",
+                                              title="BE Git Excel", )
+            if file is not None:
+                be_file.set(file)
+                raw[2] = file
+
+        Button(box, text="Browse", font=("Segoe UI", 15), relief="solid", bd=1, bg="white", command=get_sec,
+               fg="black").place(x=620, y=30, height=30)
+        Button(box, text="Browse", font=("Segoe UI", 15), relief="solid", bd=1, bg="white", command=get_tec,
+               fg="black").place(x=620, y=80, height=30)
+        Button(box, text="Browse", font=("Segoe UI", 15), relief="solid", bd=1, bg="white", command=get_bec,
+               fg="black").place(x=620, y=130, height=30)
 
     def click(self, event):
         if 557 > event.x > 457 and 270 < event.y < 370:
             self.progress()
         elif 557 > event.x > 457 and 435 < event.y < 535:
-            print("event 2 triggered")
+            self.sync()
         elif 734 > event.x > 634 and 270 < event.y < 370:
             print("event 3 triggered")
         elif 734 > event.x > 634 and 435 < event.y < 535:
@@ -397,8 +498,14 @@ class PTG:
         elif 910 > event.x > 810 and 270 < event.y < 370:
             print("event 5 triggered")
         elif 910 > event.x > 810 and 435 < event.y < 535:
-            print("event 6 triggered")
+            self.settings()
         return
+
+    def exit(self):
+        with open("data.dat", "w") as save:
+            for i in raw:
+                save.write(i + ",")
+        self.main.destroy()
 
 
 if __name__ == "__main__":
@@ -410,8 +517,3 @@ if __name__ == "__main__":
 
     PTG(win)
     win.mainloop()
-
-
-
-
-
