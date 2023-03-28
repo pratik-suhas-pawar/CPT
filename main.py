@@ -68,7 +68,7 @@ class PTG:
         self.notification.config(text="Updated")
         self.notification.update()
 
-    def progress(self):
+        def progress(self):
         self.frame_1 = LabelFrame(self.main, bg="white", fg="black", bd=0)
         # self.cnt = 1
         self.page = 0
