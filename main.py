@@ -483,7 +483,7 @@ class PTG:
         Button(box, text="Browse", font=("Segoe UI", 15), relief="solid", bd=1, bg="white", command=get_bec,
                fg="black").place(x=620, y=130, height=30)
 
-    def click(self, event):
+        def click(self, event):
         if 557 > event.x > 457 and 270 < event.y < 370:
             self.progress()
         elif 557 > event.x > 457 and 435 < event.y < 535:
