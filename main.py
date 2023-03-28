@@ -12,9 +12,6 @@ import openpyxl
 with open(f"data.dat", "r") as io:
     raw = io.read().split(',')
 
-width, height = 1366, 768
-g_data = GitData()
-date, month_year = str(int(datetime.now().strftime("%d"))), datetime.now().strftime("%B %Y").split(" ")
 
 
 class PTG:
