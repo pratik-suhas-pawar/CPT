@@ -14,5 +14,9 @@ class GitData:
         contrib = str(data)[find_index - 35: find_index + 13].split(">")[-1].split(" ")[0]
         if contrib == "NO":
             return 0
-
+                try:
+            if int(contrib) > 0:
+                return int(contrib)
+        except:
+            return 0
 # print(GitData().get_today(usr_id="pratik-suhas-pawar"))
